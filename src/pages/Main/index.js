@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Platform, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Platform,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 
 import Imc from '../../components/main/Imc';
 
@@ -48,14 +55,19 @@ const Main = ({navigation}) => {
   }, []);
 
   const onRegisterClick = async () => {
-    await storeImc({
-      imc,
-      classification: imcAvaliation,
-      color: imcAvaliationColor,
-      height,
-      weight,
-    });
-    navigation.navigate('Historic');
+    let comprou = false;
+    if (comprou) {
+      await storeImc({
+        imc,
+        classification: imcAvaliation,
+        color: imcAvaliationColor,
+        height,
+        weight,
+      });
+      navigation.navigate('Historic');
+    } else {
+      alert('Vai comprar vagabundo');
+    }
   };
 
   const onHistoricPress = async () => {
@@ -75,51 +87,55 @@ const Main = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Imc
-        value={imc}
-        avaliationColor={imcAvaliationColor}
-        avaliation={imcAvaliation}
-      />
-      <Text style={styles.label}>Seu Peso</Text>
-      <View style={styles.weightContainer}>
-        <Text style={styles.sliderValue}>{weight} Kg</Text>
-        <Slider
-          style={{width: 279}}
-          minimumValue={0}
-          maximumValue={200}
-          minimumTrackTintColor={Colors.blue}
-          maximumTrackTintColor={Colors.black}
-          thumbTintColor={Colors.blue}
-          onValueChange={(v) => setWeight(v)}
-          onSlidingComplete={(_) => imcCalculate()}
-          value={weight}
-          step={1}
+    <ScrollView>
+      <View style={styles.container}>
+        <Imc
+          value={imc}
+          avaliationColor={imcAvaliationColor}
+          avaliation={imcAvaliation}
         />
+        <Text style={styles.label}>Seu Peso</Text>
+        <View style={styles.weightContainer}>
+          <Text style={styles.sliderValue}>{weight} Kg</Text>
+          <Slider
+            style={{width: 279}}
+            minimumValue={0}
+            maximumValue={200}
+            minimumTrackTintColor={Colors.blue}
+            maximumTrackTintColor={Colors.black}
+            thumbTintColor={Colors.blue}
+            onValueChange={(v) => setWeight(v)}
+            onSlidingComplete={(_) => imcCalculate()}
+            value={weight}
+            step={1}
+          />
+        </View>
+        <Text style={styles.label}>Sua Altura</Text>
+        <View style={styles.weightContainer}>
+          <Text style={styles.sliderValue}>{height} m</Text>
+          <Slider
+            style={{width: 279}}
+            minimumValue={0}
+            maximumValue={2.5}
+            minimumTrackTintColor={Colors.blue}
+            maximumTrackTintColor={Colors.black}
+            thumbTintColor={Colors.blue}
+            onValueChange={(v) => setHeight(v.toFixed(2))}
+            onSlidingComplete={(_) => imcCalculate()}
+            value={parseFloat(height)}
+            step={0.01}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.registerButton}
+          onPress={onRegisterClick}>
+          <Text style={styles.registerButtonText}>Registrar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onHistoricPress}>
+          <Text style={styles.historicButtonText}>Histórico</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.label}>Sua Altura</Text>
-      <View style={styles.weightContainer}>
-        <Text style={styles.sliderValue}>{height} m</Text>
-        <Slider
-          style={{width: 279}}
-          minimumValue={0}
-          maximumValue={2.5}
-          minimumTrackTintColor={Colors.blue}
-          maximumTrackTintColor={Colors.black}
-          thumbTintColor={Colors.blue}
-          onValueChange={(v) => setHeight(v.toFixed(2))}
-          onSlidingComplete={(_) => imcCalculate()}
-          value={parseFloat(height)}
-          step={0.01}
-        />
-      </View>
-      <TouchableOpacity style={styles.registerButton} onPress={onRegisterClick}>
-        <Text style={styles.registerButtonText}>Registrar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onHistoricPress}>
-        <Text style={styles.historicButtonText}>Histórico</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
