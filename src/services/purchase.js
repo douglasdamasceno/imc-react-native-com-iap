@@ -17,8 +17,29 @@ export const purchased = async (productId) => {
   }
 };
 
-export const requestPurschase = async (productId) => {};
+export const requestPurschase = async (productId) => {
+  try {
+    //aqui você escolhe a forma que quer receber
+    await RNIap.requestSubscription(productId);
+  } catch (error) {
+    console.log('Erro no resquestPurschase = ', error);
+  }
+};
 
-export const fetchAvailableProducts = async (productsIds) => {};
+export const fetchAvailableProducts = async (productsIds) => {
+  try {
+    const getProducts = await RNIap.getProducts(productsIds);
+  } catch (error) {
+    console.log('Erro no fetchAvailableProducts = ', error);
+  }
+};
 
-export const purchaseUpdateSubscription = async () => {};
+export const purchaseUpdateSubscription = async () => {
+  purchaseUpdatedListener(async (purchase) => {
+    const receipt = purchase.transactionReceipt;
+    if (receipt) {
+      const ackResult = await RNIap.finishTransaction(purchase);
+      console.log(`ackResult = ${ackResult}`);
+    }
+  });
+};

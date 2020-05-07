@@ -21,7 +21,7 @@ import {
   purchaseUpdateSubscription,
 } from '../../services/purchase';
 
-import {purchased} from '../../services/purchase';
+//import {purchased} from '../../services/purchase';
 
 import Colors from '../../styles/colors';
 
@@ -57,7 +57,7 @@ const Main = ({navigation}) => {
   }, []);
 
   const onRegisterClick = async () => {
-    if (purchased) {
+    if (await purchased(defaultProductId)) {
       await storeImc({
         imc,
         classification: imcAvaliation,
@@ -67,7 +67,8 @@ const Main = ({navigation}) => {
       });
       navigation.navigate('Historic');
     } else {
-      alert('Vai comprar vagabundo');
+      requestPurschase(defaultProductId);
+      //alert('Vai comprar vagabundo');
     }
   };
 
