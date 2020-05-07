@@ -21,6 +21,8 @@ import {
   purchaseUpdateSubscription,
 } from '../../services/purchase';
 
+import {purchased} from '../../services/purchase';
+
 import Colors from '../../styles/colors';
 
 /* SÓ TEM ESSES 4 PRODUTOS DE EXEMPLO,
@@ -55,8 +57,7 @@ const Main = ({navigation}) => {
   }, []);
 
   const onRegisterClick = async () => {
-    let comprou = false;
-    if (comprou) {
+    if (purchased) {
       await storeImc({
         imc,
         classification: imcAvaliation,
