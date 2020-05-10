@@ -67,8 +67,8 @@ const Main = ({navigation}) => {
       });
       navigation.navigate('Historic');
     } else {
+      //mandar comprar
       requestPurschase(defaultProductId);
-      //alert('Vai comprar vagabundo');
     }
   };
 
